@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "aliexpress-plus",
+  "version": "1.0.0",
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.aliexpress.com/item/*"],
+      "js": ["calculate-total.js"],
+      "css": ["styles.css"]
+    }
+  ]
+
+}
