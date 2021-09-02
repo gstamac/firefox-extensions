@@ -11,7 +11,6 @@ try {
     try {
       const shippingPriceElement = shippingElement.querySelector('.product-shipping-price span')
       if (shippingPriceElement) {
-        console.log(shippingPriceElement.innerHTML)
         const shipping = parseShipping(shippingPriceElement.innerHTML)
 
         const quantity = quantityElement.value
