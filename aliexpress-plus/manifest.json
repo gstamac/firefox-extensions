@@ -6,7 +6,12 @@
   "content_scripts": [
     {
       "matches": ["https://www.aliexpress.com/item/*"],
-      "js": ["calculate-total.js"],
+      "js": ["common.js", "calculate-item-total.js"],
+      "css": ["styles.css"]
+    },
+    {
+      "matches": ["https://shoppingcart.aliexpress.com/shopcart/shopcartDetail.htm*"],
+      "js": ["common.js", "calculate-cart-totals.js"],
       "css": ["styles.css"]
     }
   ]
