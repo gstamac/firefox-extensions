@@ -1,11 +1,31 @@
 try {
-  const productPriceElement = document.querySelector('.product-price')
-  const priceElement = productPriceElement.querySelector('.product-price-current .product-price-value')
   const quantityElement = document.querySelector('.product-quantity input')
   const shippingElement = document.querySelector('.product-shipping')
 
-  const discountedElement = document.querySelector('.product-info ._1kyL5')
-  const discountedValueElement = discountedElement && discountedElement.querySelector('._3Jqm6')
+  const priceElements = []
+
+  const registerPrice = (priceSelector, valueSelector) => {
+    const priceElement = document.querySelector(priceSelector)
+    if (priceElement) {
+      const valueElement = priceElement.querySelector(valueSelector)
+      if (valueElement) {
+        priceElements.push({
+          priceElement,
+          valueElement
+        })
+
+        return true
+      }
+    }
+
+    return false
+  }
+
+  registerPrice('.product-price', '.product-price-current .product-price-value')
+  registerPrice('.product-info ._1kyL5', '._3Jqm6')
+  if (!registerPrice('.uniform-banner-box ._3YD-o', '._3Jqm6')) {
+    registerPrice('.uniform-banner-box div', '.uniform-banner-box-price')
+  }
 
   const updateTotal = () => {
     try {
@@ -15,11 +35,10 @@ try {
 
         const quantity = quantityElement.value
 
-        updateTotalPrice(shipping, quantity);
-
-        if (discountedValueElement) {
-          updateDiscountedPrice(shipping, quantity);
-        }
+        priceElements.forEach(p => {
+          const totalElement = getTotalElement(p.priceElement, 'product-price-total')
+          totalElement.textContent = formatTotal(p.valueElement.innerHTML, quantity, shipping)
+        })
       } else {
         clearTotalElements();
       }
@@ -28,40 +47,26 @@ try {
     }
   }
 
-  const updateTotalPrice = (shipping, quantity) => {
-    const totalElement = getTotalElement(productPriceElement, 'product-price-total')
-
-    totalElement.textContent = formatTotal(priceElement.innerHTML, quantity, shipping)
-  }
-
-  const updateDiscountedPrice = (shipping, quantity) => {
-    const totalElement = getTotalElement(discountedElement, 'product-price-total')
-
-    totalElement.textContent = formatTotal(discountedValueElement.innerHTML, quantity, shipping)
-  }
-
   const clearTotalElements = () => {
-    tryRemoveTotalElement(productPriceElement);
-    if (discountedElement) {
-      tryRemoveTotalElement(discountedElement);
-    }
-  }
-
-  const tryRemoveTotalElement = (parent) => {
-    var totalElement = parent.querySelector('.product-price-total')
-    if (totalElement) {
-      totalElement.remove();
-    }
+    priceElements.forEach(p => {
+      const totalElement = p.priceElement.querySelector('.product-price-total')
+      if (totalElement) {
+        totalElement.remove();
+      }
+    })
   }
 
   const observer = new MutationObserver(updateTotal)
 
-  observer.observe(priceElement, observeOptions);
-  observer.observe(quantityElement, { attributes: true });
+  priceElements.forEach(p => {
+    observer.observe(p.valueElement, observeOptions);
+  })
+  observer.observe(quantityElement, {
+    attributes: true
+  });
   observer.observe(shippingElement, observeOptions);
-  if (discountedValueElement) {
-    observer.observe(discountedValueElement, observeOptions);
-  }
+
+  updateTotal();
 } catch (e) {
   console.error(e)
 }
