@@ -1,6 +1,6 @@
 try {
   const quantityElement = document.querySelector('.product-quantity input')
-  const shippingElement = document.querySelector('.product-shipping')
+  const shippingElement = document.querySelector('.product-dynamic-shipping')
 
   const priceElements = []
 
@@ -29,22 +29,25 @@ try {
 
   const updateTotal = () => {
     try {
-      const shippingPriceElement = shippingElement.querySelector('.product-shipping-price span')
+      const shippingPriceElement = shippingElement.querySelector('.dynamic-shipping-titleLayout span strong')
       if (shippingPriceElement) {
         const shipping = parseShipping(shippingPriceElement.innerHTML)
 
         const quantity = quantityElement.value
 
-        priceElements.forEach(p => {
-          const totalElement = getTotalElement(p.priceElement, 'product-price-total')
-          totalElement.textContent = formatTotal(p.valueElement.innerHTML, quantity, shipping)
-        })
+        updateTotalElements(quantity, shipping);
       } else {
         clearTotalElements();
       }
     } catch (e) {
       console.error(e)
     }
+  }
+
+  const updateTotalElements = (quantity, shipping) => {
+    priceElements.forEach(p => {
+      updateTotalElement(p.priceElement, 'product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping));
+    })
   }
 
   const clearTotalElements = () => {

@@ -11,9 +11,7 @@ try {
 
     const quantity = quantityElement.value
 
-    const totalElement = getTotalElement(costElement, 'cart-product-price-total')
-
-    totalElement.textContent = formatTotal(priceElement.innerHTML, quantity, shipping)
+    updateTotalElement(costElement, 'cart-product-price-total', formatTotal(priceElement.innerHTML, quantity, shipping));
 
     const observer = new MutationObserver(() => updateProductTotal(productElement))
     observer.observe(priceElement, observeOptions);

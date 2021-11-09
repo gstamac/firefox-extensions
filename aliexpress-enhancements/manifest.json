@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "aliexpress-enhancements",
+  "version": "1.2.1",
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.aliexpress.com/wholesale?*"],
+      "js": ["common.js", "calculate-search-totals.js"],
+      "css": ["styles.css"]
+    },
+    {
+      "matches": ["https://www.aliexpress.com/item/*"],
+      "js": ["common.js", "calculate-item-total.js", "add-property-texts.js"],
+      "css": ["styles.css"]
+    },
+    {
+      "matches": ["https://shoppingcart.aliexpress.com/shopcart/shopcartDetail.htm*"],
+      "js": ["common.js", "calculate-cart-totals.js"],
+      "css": ["styles.css"]
+    }
+  ]
+
+}
