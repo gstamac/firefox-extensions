@@ -11,7 +11,9 @@ try {
 
     const quantity = quantityElement.value
 
-    updateTotalElement(costElement, 'cart-product-price-total', formatTotal(priceElement.innerHTML, quantity, shipping));
+    const isChina = (productElement.querySelector('.product-attr .product-sku')?.innerText ?? '').includes('China')
+
+    updateTotalElement(costElement, 'cart-product-price-total', formatTotal(priceElement.innerHTML, quantity, shipping, isChina));
 
     const observer = new MutationObserver(() => updateProductTotal(productElement))
     observer.observe(priceElement, observeOptions);

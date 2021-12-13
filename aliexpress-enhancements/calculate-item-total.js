@@ -35,7 +35,9 @@ try {
 
         const quantity = quantityElement.value
 
-        updateTotalElements(quantity, shipping);
+        const isChina = (shippingElement.querySelector('.dynamic-shipping-contentLayout span')?.innerText ?? '').includes('China')
+
+        updateTotalElements(quantity, shipping, isChina);
       } else {
         clearTotalElements();
       }
@@ -44,9 +46,9 @@ try {
     }
   }
 
-  const updateTotalElements = (quantity, shipping) => {
+  const updateTotalElements = (quantity, shipping, isChina) => {
     priceElements.forEach(p => {
-      updateTotalElement(p.priceElement, 'product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping));
+      updateTotalElement(p.priceElement, 'product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping, isChina));
     })
   }
 

@@ -29,6 +29,10 @@
   font-size: 16px;
 }
 
+.total-with-customs {
+  background-color: rgb(255, 30, 30);
+}
+
 .property-text {
   text-align: center;
   color: #505050;

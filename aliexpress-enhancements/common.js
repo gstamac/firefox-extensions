@@ -16,7 +16,8 @@ const toNumber = (s) => {
 
 const formatNumber = (n) => {
   return new Intl.NumberFormat(currencyLocale, {
-    minimumFractionDigits: 2
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
   }).format(n)
 }
 
@@ -31,7 +32,12 @@ const getTotalElement = (parent, className) => {
   return totalElement;
 }
 
-const formatTotal = (s, quantity, shipping) => `${s.replace(/<[^>]+>/g, '').replaceAll(/[\d\.,]+/g, price => formatNumber(toNumber(price) * quantity + shipping))}`
+const formatTotalNumber = (price, quantity, shipping, isChina) => {
+  const total = toNumber(price) * quantity + shipping
+  return `${formatNumber(total)}${isChina ? '|' + formatNumber(total * 1.22 + 2.5) : ''}`
+}
+
+const formatTotal = (s, quantity, shipping, isChina) => `${s.replace(/<[^>]+>/g, '').replaceAll(/[\d\.,]+/g, price => formatTotalNumber(price, quantity, shipping, isChina))}`
 
 const updateTotalElement = (parent, className, total) => {
   const totalElement = getTotalElement(parent, className)
