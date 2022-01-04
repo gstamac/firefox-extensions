@@ -34,7 +34,7 @@ const getTotalElement = (parent, className) => {
 
 const formatTotalNumber = (price, quantity, shipping, isChina) => {
   const total = toNumber(price) * quantity + shipping
-  return `${formatNumber(total)}${isChina ? '|' + formatNumber(total * 1.22 + 2.5) : ''}`
+  return `${formatNumber(total)}${isChina ? '|' + formatNumber(total * 1.22 + 2.9) : ''}`
 }
 
 const formatTotal = (s, quantity, shipping, isChina) => `${s.replace(/<[^>]+>/g, '').replaceAll(/[\d\.,]+/g, price => formatTotalNumber(price, quantity, shipping, isChina))}`
