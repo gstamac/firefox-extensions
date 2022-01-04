@@ -45,3 +45,13 @@ const updateTotalElement = (parent, className, total) => {
     totalElement.textContent = total
   }
 }
+
+const isChinaShipping = (shippingText) => {
+  if (!shippingText) return false
+
+  const text = shippingText.toLowerCase()
+
+  if (text.includes('warehouse')) return false
+
+  return ['china', 'cainiao', 'aliexpress'].some(c => text.includes(c))
+}

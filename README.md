@@ -13,7 +13,7 @@ web-ext lint -s 'aliexpress-enhancements'
 web-ext lint -s 'aliexpress-search-mods'
 
 ## Sign
+Create `web-ext-config.js` file.
+
 web-ext sign -s 'aliexpress-enhancements'
 web-ext sign -s 'aliexpress-search-mods'
-web-ext sign --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET
-web-ext sign --api-key=$env:AMO_JWT_ISSUER --api-secret=$env:AMO_JWT_SECRET

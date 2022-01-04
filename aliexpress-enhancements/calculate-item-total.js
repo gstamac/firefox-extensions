@@ -1,6 +1,7 @@
 try {
   const quantityElement = document.querySelector('.product-quantity input')
-  const shippingElement = document.querySelector('.product-dynamic-shipping')
+  const shippingElement = document.querySelector('.product-shipping')
+  const dynamicShippingElement = document.querySelector('.product-dynamic-shipping')
 
   const priceElements = []
 
@@ -27,17 +28,24 @@ try {
     registerPrice('.uniform-banner-box div', '.uniform-banner-box-price')
   }
 
+  const getShippingPriceElement = () =>
+    shippingElement ? shippingElement.querySelector('.product-shipping-price span') : dynamicShippingElement.querySelector('.dynamic-shipping-titleLayout span strong')
+
+  const isShippingFromChina = () => {
+    const shippingText = (shippingElement ? shippingElement.querySelector('.product-shipping-info') : dynamicShippingElement.querySelector('.dynamic-shipping-contentLayout span'))?.innerText
+
+    return isChinaShipping(shippingText)
+  }
+
   const updateTotal = () => {
     try {
-      const shippingPriceElement = shippingElement.querySelector('.dynamic-shipping-titleLayout span strong')
+      const shippingPriceElement = getShippingPriceElement()
       if (shippingPriceElement) {
         const shipping = parseShipping(shippingPriceElement.innerHTML)
 
         const quantity = quantityElement.value
 
-        const isChina = (shippingElement.querySelector('.dynamic-shipping-contentLayout span')?.innerText ?? '').includes('China')
-
-        updateTotalElements(quantity, shipping, isChina);
+        updateTotalElements(quantity, shipping, isShippingFromChina());
       } else {
         clearTotalElements();
       }
@@ -69,7 +77,8 @@ try {
   observer.observe(quantityElement, {
     attributes: true
   });
-  observer.observe(shippingElement, observeOptions);
+  if (shippingElement) observer.observe(shippingElement, observeOptions);
+  if (dynamicShippingElement) observer.observe(dynamicShippingElement, observeOptions);
 
   updateTotal();
 } catch (e) {
