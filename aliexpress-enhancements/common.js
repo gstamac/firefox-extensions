@@ -32,17 +32,41 @@ const getTotalElement = (parent, className) => {
   return totalElement;
 }
 
-const formatTotalNumber = (price, quantity, shipping, isChina) => {
-  const total = toNumber(price) * quantity + shipping
-  return `${formatNumber(total)}${isChina ? '|' + formatNumber(total * 1.22 + 2.9) : ''}`
+const calcTotalWithVat = (price, quantity, shipping, isChina, vatIncluded) => ({
+  total: toNumber(price) * quantity + shipping,
+  vat: isChina & !vatIncluded ? total * 0.22 : 0,
+  processing: isChina ? 2.9 : 0,
+})
+
+const formatTotalNumber = (price, quantity, shipping, isChina, vatIncluded) => {
+  const total = calcTotalWithVat(price, quantity, shipping, isChina, vatIncluded)
+
+  return `${formatNumber(total.total)}${isChina ? '|' + formatNumber(total.total + total.vat + total.processing) : ''}`
 }
 
-const formatTotal = (s, quantity, shipping, isChina) => `${s.replace(/<[^>]+>/g, '').replaceAll(/[\d\.,]+/g, price => formatTotalNumber(price, quantity, shipping, isChina))}`
+const formatTotalHint = (price, quantity, shipping, isChina, vatIncluded) => {
+  console.log(price)
+  const total = calcTotalWithVat(price, quantity, shipping, isChina, vatIncluded)
+
+  return `Total: ${formatNumber(total.total)}\nVAT: ${formatNumber(total.vat)}\nProcessing: ${formatNumber(total.processing)}`
+}
+
+const formatTotal = (s, quantity, shipping, isChina, vatIncluded) => {
+  const text = s.replace(/<[^>]+>/g, '')
+
+  const hint = formatTotalHint(text.match(/[\d\.,]+/), quantity, shipping, isChina, vatIncluded)
+
+  return {
+    total: `${text.replaceAll(/[\d\.,]+/g, price => formatTotalNumber(price, quantity, shipping, isChina, vatIncluded))}`,
+    hint
+  }
+}
 
 const updateTotalElement = (parent, className, total) => {
   const totalElement = getTotalElement(parent, className)
-  if (totalElement.textContent !== total) {
-    totalElement.textContent = total
+  if (totalElement.textContent !== total.total) {
+    totalElement.textContent = total.total
+    totalElement.title = total.hint
   }
 }
 

@@ -41,11 +41,13 @@ try {
     try {
       const shippingPriceElement = getShippingPriceElement()
       if (shippingPriceElement) {
-        const shipping = parseShipping(shippingPriceElement.innerHTML)
+        const shipping = parseShipping(shippingPriceElement.innerHTML);
 
-        const quantity = quantityElement.value
+        const quantity = quantityElement.value;
 
-        updateTotalElements(quantity, shipping, isShippingFromChina());
+        const vatIncluded = document.querySelector('.product-info .product-vat') !== undefined;
+
+        updateTotalElements(quantity, shipping, isShippingFromChina(), vatIncluded);
       } else {
         clearTotalElements();
       }
@@ -54,9 +56,9 @@ try {
     }
   }
 
-  const updateTotalElements = (quantity, shipping, isChina) => {
+  const updateTotalElements = (quantity, shipping, isChina, vatIncluded) => {
     priceElements.forEach(p => {
-      updateTotalElement(p.priceElement, 'product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping, isChina));
+      updateTotalElement(p.priceElement, 'product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping, isChina, vatIncluded));
     })
   }
 
