@@ -10,10 +10,6 @@ const shippingsOverwrites = [{
     countryName: "Czech Republic",
   },
   {
-    countryCode: "UK",
-    countryName: "United Kingdom",
-  },
-  {
     countryCode: "ES",
     countryName: "Spain",
   },
@@ -40,6 +36,10 @@ const shippingsOverwrites = [{
   {
     countryCode: "BE",
     countryName: "Belgium",
+  },
+  {
+    countryCode: "UK",
+    countryName: "United Kingdom",
   },
   {
     countryCode: "CN",

@@ -13,7 +13,7 @@ try {
 
     const isChina = isChinaShipping(productElement.querySelector('.product-attr .product-sku')?.innerText) || isChinaShipping(productElement.querySelector('.product-logistics .logistics-company')?.innerText)
 
-    updateTotalElement(costElement, 'cart-product-price-total', formatTotal(priceElement.innerHTML, quantity, shipping, isChina));
+    updateTotalElement(costElement, 'cart-product-price-total', formatTotal(priceElement.innerHTML, quantity, shipping, isChina, true));
 
     const observer = new MutationObserver(() => updateProductTotal(productElement))
     observer.observe(priceElement, observeOptions);

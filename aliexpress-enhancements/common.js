@@ -32,11 +32,14 @@ const getTotalElement = (parent, className) => {
   return totalElement;
 }
 
-const calcTotalWithVat = (price, quantity, shipping, isChina, vatIncluded) => ({
-  total: toNumber(price) * quantity + shipping,
-  vat: isChina & !vatIncluded ? total * 0.22 : 0,
-  processing: isChina ? 2.9 : 0,
-})
+const calcTotalWithVat = (price, quantity, shipping, isChina, vatIncluded) => {
+  const total = toNumber(price) * quantity + shipping
+  return {
+    total,
+    vat: isChina & !vatIncluded ? total * 0.22 : 0,
+    processing: isChina ? 2.9 : 0,
+  }
+}
 
 const formatTotalNumber = (price, quantity, shipping, isChina, vatIncluded) => {
   const total = calcTotalWithVat(price, quantity, shipping, isChina, vatIncluded)
@@ -45,7 +48,6 @@ const formatTotalNumber = (price, quantity, shipping, isChina, vatIncluded) => {
 }
 
 const formatTotalHint = (price, quantity, shipping, isChina, vatIncluded) => {
-  console.log(price)
   const total = calcTotalWithVat(price, quantity, shipping, isChina, vatIncluded)
 
   return `Total: ${formatNumber(total.total)}\nVAT: ${formatNumber(total.vat)}\nProcessing: ${formatNumber(total.processing)}`
