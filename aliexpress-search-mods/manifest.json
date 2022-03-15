@@ -1,13 +1,14 @@
 {
   "manifest_version": 2,
   "name": "aliexpress-search-mods",
-  "version": "1.1.0",
+  "version": "1.2.0",
 
   "permissions": [
     "webRequest",
     "webRequestBlocking",
     "https://www.aliexpress.com/glosearch/api/product*",
-    "https://www.aliexpress.com/wholesale*"
+    "https://www.aliexpress.com/wholesale*",
+    "https://www.aliexpress.com/item*"
   ],
 
   "background": {

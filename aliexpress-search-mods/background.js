@@ -1,4 +1,4 @@
-function filterAndModifyShippingOptions(requestDetails, shipFromCountry) {
+function modifyResponse(requestDetails, modifier) {
   const filter = browser.webRequest.filterResponseData(requestDetails.requestId);
   const decoder = new TextDecoder("utf-8");
   const encoder = new TextEncoder();
@@ -15,13 +15,16 @@ function filterAndModifyShippingOptions(requestDetails, shipFromCountry) {
 
     const str = data.join("");
 
-    filter.write(encoder.encode(modifyShippingOptions(str, shipFromCountry)));
+    filter.write(encoder.encode(modifier(str)));
 
     filter.close();
   };
 }
+function filterAndModifyShippingOptions(requestDetails, shipFromCountry) {
+  modifyResponse(requestDetails, str => modifyShippingOptions(str, shipFromCountry))
+}
 
-function interceptor(requestDetails) {
+function productApiInterceptor(requestDetails) {
   const shipFromCountry = new URL(requestDetails.url).searchParams.get('shipFromCountry')
 
   filterAndModifyShippingOptions(requestDetails, shipFromCountry)
@@ -30,8 +33,22 @@ function interceptor(requestDetails) {
 }
 
 chrome.webRequest.onBeforeRequest.addListener(
-  interceptor, {
+  productApiInterceptor, {
     urls: ['https://www.aliexpress.com/glosearch/api/product*']
+  }, [
+    'blocking'
+  ]
+);
+
+function itemInterceptor(requestDetails) {
+  modifyResponse(requestDetails, str => str.replace(/"hideShipFrom":true/gi, '"hideShipFrom":false'))
+
+  return {};
+}
+
+chrome.webRequest.onBeforeRequest.addListener(
+  itemInterceptor, {
+    urls: ['https://www.aliexpress.com/item*']
   }, [
     'blocking'
   ]
