@@ -28,8 +28,8 @@ try {
     registerPrice('.uniform-banner-box div', '.uniform-banner-box-price')
   }
 
-  const getShippingPriceElement = () =>
-    shippingElement ? shippingElement.querySelector('.product-shipping-price span') : dynamicShippingElement.querySelector('.dynamic-shipping-titleLayout span strong')
+  const getShippingPriceElements = () =>
+    [...shippingElement ? shippingElement.querySelectorAll('.product-shipping-price span') : dynamicShippingElement.querySelectorAll('.dynamic-shipping-titleLayout span strong')]
 
   const isShippingFromChina = () => {
     const shippingText = (shippingElement ? shippingElement.querySelector('.product-shipping-info') : dynamicShippingElement.querySelector('.dynamic-shipping-contentLayout span'))?.innerText
@@ -39,9 +39,9 @@ try {
 
   const updateTotal = () => {
     try {
-      const shippingPriceElement = getShippingPriceElement()
-      if (shippingPriceElement) {
-        const shipping = parseShipping(shippingPriceElement.innerHTML);
+      const shippingPriceElements = getShippingPriceElements()
+      if (shippingPriceElements.length > 0) {
+        const shipping = shippingPriceElements.map(s => parseShipping(s.innerHTML)).filter(s => s !== undefined)[0];
 
         const quantity = quantityElement.value;
 

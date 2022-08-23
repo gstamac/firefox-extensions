@@ -8,7 +8,17 @@ const observeOptions = {
 const currencyElement = document.querySelector('#switcher-info span.currency')
 const currencyLocale = currencyElement && currencyElement.innerHTML.includes('EUR') ? 'de-DE' : 'en-US'
 
-const parseShipping = (shippingText) => shippingText.includes('Free Shipping') ? 0 : toNumber(new RegExp('Shipping:\\D*([\\d\\.,]+)').exec(shippingText)[1])
+const parseShipping = (shippingText) => {
+  if (shippingText.includes('Free Shipping')) {
+    return 0
+  }
+
+  const matches = new RegExp('Shipping:\\D*([\\d\\.,]+)').exec(shippingText)
+
+  if (matches) {
+    return toNumber(matches[1])
+  }
+}
 
 const toNumber = (s) => {
   return s ? (new Number(s.toString().replace(/[,\.]/g, '')) / 100) : undefined
