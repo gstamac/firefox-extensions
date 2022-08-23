@@ -1,4 +1,4 @@
-.product-price-total {
+.calc-product-price-total {
   color: rgb(58, 0, 0);
   margin-left: 10px;
   padding: 0px 5px;
@@ -9,7 +9,7 @@
   vertical-align: bottom;
 }
 
-.cart-product-price-total {
+.calc-cart-product-price-total {
   color: rgb(58, 0, 0);
   margin-left: 10px;
   padding: 0px 5px;
@@ -19,7 +19,7 @@
   font-size: 16px;
 }
 
-.search-product-price-total {
+.calc-search-product-price-total {
   color: rgb(58, 0, 0);
   margin-left: 10px;
   padding: 0px 5px;
@@ -29,11 +29,7 @@
   font-size: 16px;
 }
 
-.total-with-customs {
-  background-color: rgb(255, 30, 30);
-}
-
-.property-text {
+.calc-property-text {
   text-align: center;
   color: #505050;
   font-size: smaller;

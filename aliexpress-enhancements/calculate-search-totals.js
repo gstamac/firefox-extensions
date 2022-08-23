@@ -10,7 +10,7 @@ try {
           const priceElement = itemElement.querySelector('._12A8D')
 
           if (priceElement) {
-            updateTotalElement(priceElement.parentElement, 'search-product-price-total', formatTotal(priceElement.innerHTML, 1, shipping));
+            updateTotalElement(priceElement.parentElement, 'calc-search-product-price-total', formatTotal(priceElement.innerHTML, 1, shipping));
           }
         }
       })

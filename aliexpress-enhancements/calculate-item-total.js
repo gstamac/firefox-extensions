@@ -58,13 +58,13 @@ try {
 
   const updateTotalElements = (quantity, shipping, isChina, vatIncluded) => {
     priceElements.forEach(p => {
-      updateTotalElement(p.priceElement, 'product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping, isChina, vatIncluded));
+      updateTotalElement(p.priceElement, 'calc-product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping, isChina, vatIncluded));
     })
   }
 
   const clearTotalElements = () => {
     priceElements.forEach(p => {
-      const totalElement = p.priceElement.querySelector('.product-price-total')
+      const totalElement = p.priceElement.querySelector('.calc-product-price-total')
       if (totalElement) {
         totalElement.remove();
       }

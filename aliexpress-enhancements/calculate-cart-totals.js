@@ -1,19 +1,23 @@
 try {
-  const cartListElement = document.querySelector('.shopping-cart-list')
+  const cartListElement = document.querySelector('.cart-list')
 
   const updateProductTotal = (productElement) => {
-    const costElement = productElement.querySelector('.cost-main')
-    const priceElement = costElement.querySelector('.main-cost-price')
-    const shippingElement = productElement.querySelector('.logistics-cost')
-    const quantityElement = productElement.querySelector('.product-num input')
+    console.log('-------------------')
+    console.log(productElement)
+    const costElement = productElement.querySelector('.cart-product-price')
+    if (costElement === null) return
+    const priceElement = costElement.querySelector('span')
+    const shippingElement = productElement.querySelector('.cart-product-ship')
+    const quantityElement = productElement.querySelector('.comet-input-number-input')
 
     const shipping = parseShipping(shippingElement.innerHTML)
-
+    
     const quantity = quantityElement.value
 
-    const isChina = isChinaShipping(productElement.querySelector('.product-attr .product-sku')?.innerText) || isChinaShipping(productElement.querySelector('.product-logistics .logistics-company')?.innerText)
+    const isChina = isChinaShipping(productElement.querySelector('.product-attr .product-sku')?.innerText) 
+      || isChinaShipping(productElement.querySelector('.product-logistics .logistics-company')?.innerText)
 
-    updateTotalElement(costElement, 'cart-product-price-total', formatTotal(priceElement.innerHTML, quantity, shipping, isChina, true));
+    updateTotalElement(costElement, 'calc-cart-product-price-total', formatTotal(priceElement.innerHTML, quantity, shipping, isChina, true));
 
     const observer = new MutationObserver(() => updateProductTotal(productElement))
     observer.observe(priceElement, observeOptions);
@@ -23,9 +27,9 @@ try {
 
   new MutationObserver((mutations) => {
     mutations
-      .filter(m => m.type === 'childList' && m.target.className === 'shopping-cart-list')
+      .filter(m => m.type === 'childList' && m.target.className === 'cart-list')
       .reduce((elements, mutation) => {
-        mutation.addedNodes.forEach(n => n.querySelectorAll('.product-container').forEach(p => elements.push(p)))
+        mutation.addedNodes.forEach(n => n.querySelectorAll('.cart-product').forEach(p => elements.push(p)))
 
         return elements
       }, [])
@@ -33,7 +37,7 @@ try {
   }).observe(cartListElement, observeOptions);
 
   cartListElement
-    .querySelectorAll('.product-container')
+    .querySelectorAll('.cart-product')
     .forEach(updateProductTotal)
 
 } catch (e) {
