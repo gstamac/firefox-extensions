@@ -47,14 +47,16 @@ const calcTotalWithVat = (price, quantity, shipping, isChina, vatIncluded) => {
   return {
     total,
     vat: isChina & !vatIncluded ? total * 0.22 : 0,
-    processing: isChina ? 2.9 : 0,
+    processing: isChina & !vatIncluded ? 2.9 : 0,
   }
 }
 
 const formatTotalNumber = (price, quantity, shipping, isChina, vatIncluded) => {
   const total = calcTotalWithVat(price, quantity, shipping, isChina, vatIncluded)
 
-  return `${formatNumber(total.total)}${isChina ? '|' + formatNumber(total.total + total.vat + total.processing) : ''}`
+  const totalWithExtra = total.total + total.vat + total.processing
+
+  return `${formatNumber(total.total)}${totalWithExtra > total.total ? '|' + formatNumber(totalWithExtra) : ''}`
 }
 
 const formatTotalHint = (price, quantity, shipping, isChina, vatIncluded) => {
