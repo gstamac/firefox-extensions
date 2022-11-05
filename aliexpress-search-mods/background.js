@@ -20,21 +20,16 @@ function modifyResponse(requestDetails, modifier) {
     filter.close();
   };
 }
-function filterAndModifyShippingOptions(requestDetails, shipFromCountry) {
-  modifyResponse(requestDetails, str => modifyShippingOptions(str, shipFromCountry))
-}
 
-function productApiInterceptor(requestDetails) {
-  const shipFromCountry = new URL(requestDetails.url).searchParams.get('shipFromCountry')
-
-  filterAndModifyShippingOptions(requestDetails, shipFromCountry)
+function searchInterceptor(requestDetails) {
+  modifyResponse(requestDetails, str => modifyShippingOptions(str))
 
   return {};
 }
 
 chrome.webRequest.onBeforeRequest.addListener(
-  productApiInterceptor, {
-    urls: ['https://www.aliexpress.com/glosearch/api/product*']
+  searchInterceptor, {
+    urls: ['https://www.aliexpress.com/wholesale*', 'https://www.aliexpress.com/fn/search-pc/index*']
   }, [
     'blocking'
   ]
@@ -85,6 +80,7 @@ const referrerStore = (() => {
 function storeReferredShipFromCountry(requestDetails) {
   const referrer = requestDetails.requestHeaders.find(h => h.name === 'Referer')
   if (referrer) {
+    console.log(`Referer= ${referrer.value}`)
     referrerStore.set(requestDetails.requestId, referrer.value)
   }
 
