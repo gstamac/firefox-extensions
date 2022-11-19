@@ -17,3 +17,4 @@ Create `web-ext-config.js` file.
 
 web-ext sign -s 'aliexpress-enhancements'
 web-ext sign -s 'aliexpress-search-mods'
+web-ext sign -s 'rarbg-enhancements'

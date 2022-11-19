@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "rarbg-enhancements",
+  "version": "1.0.0",
+
+  "content_scripts": [
+    {
+      "matches": ["https://rargb.to/*", "https://www.proxyrarbg.org/*"],
+      "js": ["add-magnets.js"],
+      "css": ["styles.css"]
+    }
+  ]
+
+}
