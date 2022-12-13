@@ -9,7 +9,7 @@ try {
     const priceElement = costElement.querySelector('span')
     const shippingElement = productElement.querySelector('.cart-product-ship')
     const quantityElement = productElement.querySelector('.comet-input-number-input')
-
+    
     const shipping = parseShipping(shippingElement.innerHTML)
     
     const quantity = quantityElement.value
@@ -27,7 +27,7 @@ try {
 
   new MutationObserver((mutations) => {
     mutations
-      .filter(m => m.type === 'childList' && m.target.className === 'cart-list')
+      .filter(m => m.type === 'childList' && m.target.className.includes('infinite-scroll-component'))
       .reduce((elements, mutation) => {
         mutation.addedNodes.forEach(n => n.querySelectorAll('.cart-product').forEach(p => elements.push(p)))
 

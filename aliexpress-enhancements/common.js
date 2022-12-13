@@ -13,7 +13,8 @@ const parseShipping = (shippingText) => {
     return 0
   }
 
-  const matches = new RegExp('Shipping[^:]*:\\D*([\\d\\.,]+)').exec(shippingText)
+  const matches = new RegExp('[Ss]hipping\\D*([\\d\\.,]+)').exec(shippingText)
+  // const matches = new RegExp('Shipping[^:]*:\\D*([\\d\\.,]+)').exec(shippingText)
 
   if (matches) {
     return toNumber(matches[1])
@@ -53,9 +54,9 @@ const calcTotalWithVat = (price, quantity, shipping, isChina, vatIncluded) => {
 
 const formatTotalNumber = (price, quantity, shipping, isChina, vatIncluded) => {
   const total = calcTotalWithVat(price, quantity, shipping, isChina, vatIncluded)
-
+  
   const totalWithExtra = total.total + total.vat + total.processing
-
+  
   return `${formatNumber(total.total)}${totalWithExtra > total.total ? '|' + formatNumber(totalWithExtra) : ''}`
 }
 
@@ -78,7 +79,6 @@ const formatTotal = (s, quantity, shipping, isChina, vatIncluded) => {
 
 const updateTotalElement = (parent, className, total) => {
   const totalElement = getTotalElement(parent, className)
-  console.log(totalElement)
   if (totalElement.textContent !== total.total) {
     totalElement.textContent = total.total
     totalElement.title = total.hint
