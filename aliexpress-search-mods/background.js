@@ -29,7 +29,11 @@ function searchInterceptor(requestDetails) {
 
 chrome.webRequest.onBeforeRequest.addListener(
   searchInterceptor, {
-    urls: ['https://www.aliexpress.com/wholesale*', 'https://www.aliexpress.com/fn/search-pc/index*']
+    urls: [
+      'https://www.aliexpress.com/wholesale*',
+      'https://www.aliexpress.com/fn/search-pc/index*',
+      'https://www.aliexpress.com/glosearch/api/product*'
+    ]
   }, [
     'blocking'
   ]
