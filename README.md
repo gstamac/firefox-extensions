@@ -7,6 +7,7 @@ https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext
 ## Build
 web-ext build -s aliexpress-enhancements
 web-ext build -s aliexpress-search-mods
+web-ext build -s rarbg-enhancements
 
 ## Lint
 web-ext lint -s aliexpress-enhancements
