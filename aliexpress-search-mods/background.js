@@ -31,6 +31,7 @@ chrome.webRequest.onBeforeRequest.addListener(
   searchInterceptor, {
     urls: [
       'https://www.aliexpress.com/wholesale*',
+      'https://www.aliexpress.com/w/wholesale*',
       'https://www.aliexpress.com/fn/search-pc/index*',
       'https://www.aliexpress.com/glosearch/api/product*'
     ]
@@ -134,14 +135,20 @@ function redirectWhenDifferentReferredShipFrom(requestDetails) {
 
 chrome.webRequest.onBeforeSendHeaders.addListener(
   storeReferredShipFromCountry, {
-    urls: ['https://www.aliexpress.com/wholesale*']
+    urls: [
+      'https://www.aliexpress.com/wholesale*',
+      'https://www.aliexpress.com/w/wholesale*'
+    ]
   }, [
     'requestHeaders', 'blocking'
   ]);
 
 chrome.webRequest.onHeadersReceived.addListener(
   redirectWhenDifferentReferredShipFrom, {
-    urls: ['https://www.aliexpress.com/wholesale*']
+    urls: [
+      'https://www.aliexpress.com/wholesale*',
+      'https://www.aliexpress.com/w/wholesale*'
+    ]
   }, [
     'blocking'
   ]);
