@@ -29,10 +29,15 @@ try {
   }
 
   const getShippingPriceElements = () =>
-    [...shippingElement ? shippingElement.querySelectorAll('.product-shipping-price span') : dynamicShippingElement.querySelectorAll('.dynamic-shipping-titleLayout span strong')]
+    [...shippingElement ?
+      shippingElement.querySelectorAll('.product-shipping-price span') :
+      dynamicShippingElement.querySelectorAll('.dynamic-shipping-line')]
+  // dynamicShippingElement.querySelectorAll('.dynamic-shipping-titleLayout span strong')]
 
   const isShippingFromChina = () => {
-    const shippingText = (shippingElement ? shippingElement.querySelector('.product-shipping-info') : dynamicShippingElement.querySelector('.dynamic-shipping-contentLayout span'))?.innerText
+    const shippingText = (shippingElement ?
+      shippingElement.querySelector('.product-shipping-info') :
+      dynamicShippingElement.querySelector('.dynamic-shipping-contentLayout span'))?.innerText
 
     return isChinaShipping(shippingText)
   }
@@ -42,12 +47,15 @@ try {
       const shippingPriceElements = getShippingPriceElements()
       if (shippingPriceElements.length > 0) {
         const shipping = shippingPriceElements.map(s => parseShipping(s.innerHTML)).filter(s => s !== undefined)[0];
+        if (shipping !== undefined) {
+          const quantity = quantityElement.value;
 
-        const quantity = quantityElement.value;
+          const vatIncluded = document.querySelector('.product-info .product-vat') !== undefined;
 
-        const vatIncluded = document.querySelector('.product-info .product-vat') !== undefined;
-
-        updateTotalElements(quantity, shipping, isShippingFromChina(), vatIncluded);
+          updateTotalElements(quantity, shipping, isShippingFromChina(), vatIncluded);
+        } else {
+          clearTotalElements();
+        }
       } else {
         clearTotalElements();
       }
