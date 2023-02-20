@@ -9,15 +9,12 @@ try {
     const priceElement = costElement.querySelector('span')
     const shippingElement = productElement.querySelector('.cart-product-ship')
     const quantityElement = productElement.querySelector('.comet-input-number-input')
-    
+
     const shipping = parseShipping(shippingElement.innerHTML)
-    
+
     const quantity = quantityElement.value
 
-    const isChina = isChinaShipping(productElement.querySelector('.product-attr .product-sku')?.innerText) 
-      || isChinaShipping(productElement.querySelector('.product-logistics .logistics-company')?.innerText)
-
-    updateTotalElement(costElement, 'calc-cart-product-price-total', formatTotal(priceElement.innerHTML, quantity, shipping, isChina, true));
+    updateTotalElement(costElement, 'calc-cart-product-price-total', formatTotal(priceElement.innerHTML, quantity, shipping, true));
 
     const observer = new MutationObserver(() => updateProductTotal(productElement))
     observer.observe(priceElement, observeOptions);

@@ -10,7 +10,7 @@ function modifyResponse(requestDetails, modifier) {
     }));
   };
 
-  filter.onstop = event => {
+  filter.onstop = _event => {
     data.push(decoder.decode());
 
     const str = data.join("");
@@ -41,7 +41,12 @@ chrome.webRequest.onBeforeRequest.addListener(
 );
 
 function itemInterceptor(requestDetails) {
-  modifyResponse(requestDetails, str => str.replace(/"hideShipFrom":true/gi, '"hideShipFrom":false'))
+  modifyResponse(requestDetails, str => {
+    if (str.indexOf('pdp-store-menu-wrap') == -1)
+      return str.replace(/"hideShipFrom":true/gi, '"hideShipFrom":false')
+    else
+      return str
+  })
 
   return {};
 }

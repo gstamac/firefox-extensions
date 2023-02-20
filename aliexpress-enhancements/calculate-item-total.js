@@ -1,12 +1,12 @@
 try {
-  const quantityElement = document.querySelector('.product-quantity input')
+  const quantityElement = document.querySelector('.product-quantity input') || document.querySelector('.quantity--picker--Zeoj1SK input')
   const shippingElement = document.querySelector('.product-shipping')
-  const dynamicShippingElement = document.querySelector('.product-dynamic-shipping')
-
+  const dynamicShippingElement = document.querySelector('.dynamic-shipping')
+  const actionWrapElement = document.querySelector('.action--wrap--gC0zTOC')
   const priceElements = []
 
-  const registerPrice = (priceSelector, valueSelector) => {
-    const priceElement = document.querySelector(priceSelector)
+  const registerPrice = (parent, priceSelector, valueSelector) => {
+    const priceElement = parent.querySelector(priceSelector)
     if (priceElement) {
       const valueElement = priceElement.querySelector(valueSelector)
       if (valueElement) {
@@ -22,25 +22,17 @@ try {
     return false
   }
 
-  registerPrice('.product-price', '.product-price-current .product-price-value')
-  registerPrice('.product-info ._1kyL5', '._3Jqm6')
-  if (!registerPrice('.uniform-banner-box ._3YD-o', '._3Jqm6')) {
-    registerPrice('.uniform-banner-box div', '.uniform-banner-box-price')
+  registerPrice(document, '.price--wrap--tA4MDk4', '.pdp-comp-price-current')
+  registerPrice(document, '.product-price', '.product-price-current .product-price-value')
+  registerPrice(document, '.product-info ._1kyL5', '._3Jqm6')
+  if (!registerPrice(document, '.uniform-banner-box ._3YD-o', '._3Jqm6')) {
+    registerPrice(document, '.uniform-banner-box div', '.uniform-banner-box-price')
   }
 
   const getShippingPriceElements = () =>
     [...shippingElement ?
       shippingElement.querySelectorAll('.product-shipping-price span') :
       dynamicShippingElement.querySelectorAll('.dynamic-shipping-line')]
-  // dynamicShippingElement.querySelectorAll('.dynamic-shipping-titleLayout span strong')]
-
-  const isShippingFromChina = () => {
-    const shippingText = (shippingElement ?
-      shippingElement.querySelector('.product-shipping-info') :
-      dynamicShippingElement.querySelector('.dynamic-shipping-contentLayout span'))?.innerText
-
-    return isChinaShipping(shippingText)
-  }
 
   const updateTotal = () => {
     try {
@@ -50,9 +42,9 @@ try {
         if (shipping !== undefined) {
           const quantity = quantityElement.value;
 
-          const vatIncluded = document.querySelector('.product-info .product-vat') !== undefined;
+          const vatIncluded = document.querySelector('.price--vat--p2QOSMW') !== undefined;
 
-          updateTotalElements(quantity, shipping, isShippingFromChina(), vatIncluded);
+          updateTotalElements(quantity, shipping, vatIncluded);
         } else {
           clearTotalElements();
         }
@@ -64,9 +56,9 @@ try {
     }
   }
 
-  const updateTotalElements = (quantity, shipping, isChina, vatIncluded) => {
+  const updateTotalElements = (quantity, shipping, vatIncluded) => {
     priceElements.forEach(p => {
-      updateTotalElement(p.priceElement, 'calc-product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping, isChina, vatIncluded));
+      updateTotalElement(p.priceElement, 'calc-product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping, vatIncluded));
     })
   }
 
@@ -84,11 +76,19 @@ try {
   priceElements.forEach(p => {
     observer.observe(p.valueElement, observeOptions);
   })
-  observer.observe(quantityElement, {
-    attributes: true
-  });
+  if (quantityElement) {
+    observer.observe(quantityElement, {
+      attributes: true
+    });
+  }
   if (shippingElement) observer.observe(shippingElement, observeOptions);
   if (dynamicShippingElement) observer.observe(dynamicShippingElement, observeOptions);
+  if (actionWrapElement) {
+    new MutationObserver(() => {
+      registerPrice(actionWrapElement, '.price--wrap--tA4MDk4', '.pdp-comp-price-current')
+      updateTotal();
+    }).observe(actionWrapElement, observeOptions);
+  }
 
   updateTotal();
 } catch (e) {
