@@ -28,6 +28,7 @@ try {
   if (!registerPrice(document, '.uniform-banner-box ._3YD-o', '._3Jqm6')) {
     registerPrice(document, '.uniform-banner-box div', '.uniform-banner-box-price')
   }
+  registerPrice(document, '.pdp-info-right .product-price', '.product-price-current')
 
   const getShippingPriceElements = () =>
     [...shippingElement ?

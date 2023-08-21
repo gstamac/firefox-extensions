@@ -49,17 +49,3 @@ const shippingsOverwrites = [{
   ...s,
   selected: false
 }))
-
-const modifyShippingOptions = (source) => {
-  const shipFromCountryMatch = source.match(/"shipFromCountry":"([^"]+)"/)
-  const shipFromCountry = shipFromCountryMatch ? shipFromCountryMatch[1] : ""
-
-  return source.replace(/("search_refine_logistics","content":|"Ship From","content":|"refineShipFromCountries":)(\[[^\]]*\])/, (_subs, prefix, _defaultShippings) => {
-    const shippings = shippingsOverwrites.map(c => ({
-      ...c,
-      selected: c.countryCode === shipFromCountry
-    }))
-
-    return `${prefix}${JSON.stringify(shippings)}`
-  })
-}

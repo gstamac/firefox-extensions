@@ -21,10 +21,30 @@ function modifyResponse(requestDetails, modifier) {
   };
 }
 
+function filterAndModifyShippingOptions(requestDetails, shipFromCountry) {
+  modifyResponse(requestDetails, str => modifyShippingOptions(str, shipFromCountry))
+}
+
 function searchInterceptor(requestDetails) {
   modifyResponse(requestDetails, str => modifyShippingOptions(str))
 
   return {};
+}
+
+const modifyShippingOptions = (source, shipFromCountry) => {
+  if (!shipFromCountry) {
+    const shipFromCountryMatch = source.match(/"shipFromCountry":"([^"]+)"/)
+    shipFromCountry = shipFromCountryMatch ? shipFromCountryMatch[1] : ""
+  }
+
+  return source.replace(/("search_refine_logistics","content":|"Ship From","content":|"refineShipFromCountries":)(\[[^\]]*\])/, (_subs, prefix, _defaultShippings) => {
+    const shippings = shippingsOverwrites.map(c => ({
+      ...c,
+      selected: c.countryCode === shipFromCountry
+    }))
+
+    return `${prefix}${JSON.stringify(shippings)}`
+  })
 }
 
 chrome.webRequest.onBeforeRequest.addListener(
