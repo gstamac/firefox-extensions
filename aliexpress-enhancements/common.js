@@ -9,7 +9,7 @@ const currencyElement = document.querySelector('#switcher-info span.currency')
 const currencyLocale = currencyElement && currencyElement.innerHTML.includes('EUR') ? 'de-DE' : 'en-US'
 
 const parseShipping = (shippingText) => {
-  if (shippingText.includes('Free Shipping')) {
+  if (shippingText.toLowerCase().includes('free shipping')) {
     return 0
   }
 

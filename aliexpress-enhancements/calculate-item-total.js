@@ -38,6 +38,7 @@ try {
   const updateTotal = () => {
     try {
       const shippingPriceElements = getShippingPriceElements()
+      console.log('shippingPriceElements', shippingPriceElements)
       if (shippingPriceElements.length > 0) {
         const shipping = shippingPriceElements.map(s => parseShipping(s.innerHTML)).filter(s => s !== undefined)[0];
         if (shipping !== undefined) {
