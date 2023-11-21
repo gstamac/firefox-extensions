@@ -37,10 +37,14 @@ const modifyShippingOptions = (source, shipFromCountry) => {
     shipFromCountry = shipFromCountryMatch ? shipFromCountryMatch[1] : ""
   }
 
-  return source.replace(/("search_refine_logistics","content":|"Ship From","content":|"refineShipFromCountries":)(\[[^\]]*\])/, (_subs, prefix, _defaultShippings) => {
+  return source.replace(/("Shipping from ","content":)(\[[^\]]*\])/, (_subs, prefix, _defaultShippings) => {
     const shippings = shippingsOverwrites.map(c => ({
-      ...c,
-      selected: c.countryCode === shipFromCountry
+      displayType: "image_text",
+      selectedValue: c.countryCode,
+      selected: c.countryCode === shipFromCountry,
+      text: c.countryName,
+      imageWidth: 42,
+      imageHeight: 32
     }))
 
     return `${prefix}${JSON.stringify(shippings)}`

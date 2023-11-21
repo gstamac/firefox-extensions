@@ -3,11 +3,11 @@ setTimeout(() => {
     const cartListElement = document.querySelector('.cart-list')
 
     const updateProductTotal = (productElement) => {
-      const costElement = productElement.querySelector('.cart-product-price')
+      const costElement = productElement.querySelector('.cart-product-price-buynow')
       if (costElement === null) return
       const priceElement = costElement.querySelector('span')
       const shippingElement = productElement.querySelector('.cart-product-ship')
-      const quantityElement = productElement.querySelector('.comet-input-number-input')
+      const quantityElement = productElement.querySelector('.comet-v2-input-number-input')
 
       const shipping = parseShipping(shippingElement.innerHTML)
 
@@ -23,7 +23,7 @@ setTimeout(() => {
 
     new MutationObserver((mutations) => {
       mutations
-        .filter(m => m.type === 'childList' && m.target.className.includes('infinite-scroll-component'))
+        .filter(m => m.type === 'childList' && m.target.className.includes('group-container'))
         .reduce((elements, mutation) => {
           mutation.addedNodes.forEach(n => n.querySelectorAll('.cart-product').forEach(p => elements.push(p)))
 
