@@ -32,7 +32,7 @@ setTimeout(() => {
         .forEach(updateProductTotal)
     }).observe(cartListElement, observeOptions);
 
-    cartListElement
+    document
       .querySelectorAll('.cart-product')
       .forEach(updateProductTotal)
 

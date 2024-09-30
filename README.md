@@ -16,6 +16,6 @@ web-ext lint -s aliexpress-search-mods
 ## Sign
 Create `web-ext-config.js` file.
 
-web-ext sign -s aliexpress-enhancements
-web-ext sign -s aliexpress-search-mods
-web-ext sign -s rarbg-enhancements
+web-ext sign --channel unlisted -s aliexpress-enhancements
+web-ext sign --channel unlisted -s aliexpress-search-mods
+web-ext sign --channel unlisted -s rarbg-enhancements
