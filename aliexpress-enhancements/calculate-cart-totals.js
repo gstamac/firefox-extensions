@@ -6,10 +6,10 @@ setTimeout(() => {
       const costElement = productElement.querySelector('.cart-product-price-buynow')
       if (costElement === null) return
       const priceElement = costElement.querySelector('span')
-      const shippingElement = productElement.querySelector('.cart-product-ship')
+      const shippingElement = productElement.querySelector('[class^="cart-product-ship"]')
       const quantityElement = productElement.querySelector('.comet-v2-input-number-input')
 
-      const shipping = parseShipping(shippingElement.innerHTML)
+      const shipping = shippingElement == null ? null : parseShipping(shippingElement.innerHTML)
 
       const quantity = quantityElement.value
 
@@ -17,7 +17,8 @@ setTimeout(() => {
 
       const observer = new MutationObserver(() => updateProductTotal(productElement))
       observer.observe(priceElement, observeOptions);
-      observer.observe(shippingElement, observeOptions);
+      if (shippingElement !== null)
+        observer.observe(shippingElement, observeOptions);
       observer.observe(quantityElement, { attributes: true });
     }
 

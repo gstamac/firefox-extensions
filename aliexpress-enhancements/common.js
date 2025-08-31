@@ -43,44 +43,25 @@ const getTotalElement = (parent, className) => {
   return totalElement;
 }
 
-const calcTotalWithVat = (price, quantity, shipping, vatIncluded) => {
-  const total = toNumber(price) * quantity + shipping
-  return {
-    total,
-    vat: !vatIncluded ? total * 0.22 : 0,
-    processing: !vatIncluded ? 2.9 : 0,
-  }
+const calcTotal = (price, quantity, shipping) => {
+  return toNumber(price) * quantity + (shipping == null ? 0 : shipping)
 }
 
-const formatTotalNumber = (price, quantity, shipping, vatIncluded) => {
-  const total = calcTotalWithVat(price, quantity, shipping, vatIncluded)
+const formatTotalNumber = (price, quantity, shipping) => {
+  const total = calcTotal(price, quantity, shipping)
 
-  const totalWithExtra = total.total + total.vat + total.processing
-
-  return `${formatNumber(total.total)}${totalWithExtra > total.total ? '|' + formatNumber(totalWithExtra) : ''}`
+  return `${formatNumber(total)}${shipping == null ? "+?" : ""}`
 }
 
-const formatTotalHint = (price, quantity, shipping, vatIncluded) => {
-  const total = calcTotalWithVat(price, quantity, shipping, vatIncluded)
-
-  return `Total: ${formatNumber(total.total)}\nVAT: ${formatNumber(total.vat)}\nProcessing: ${formatNumber(total.processing)}`
-}
-
-const formatTotal = (s, quantity, shipping, vatIncluded) => {
+const formatTotal = (s, quantity, shipping) => {
   const text = s.replace(/<[^>]+>/g, '')
 
-  const hint = formatTotalHint(text.match(/[\d\.,]+/), quantity, shipping, vatIncluded)
-
-  return {
-    total: `${text.replaceAll(/[\d\.,]+/g, price => formatTotalNumber(price, quantity, shipping, vatIncluded))}`,
-    hint
-  }
+  return `${text.replaceAll(/[\d\.,]+/g, price => formatTotalNumber(price, quantity, shipping))}`
 }
 
 const updateTotalElement = (parent, className, total) => {
   const totalElement = getTotalElement(parent, className)
   if (totalElement.textContent !== total.total) {
-    totalElement.textContent = total.total
-    totalElement.title = total.hint
+    totalElement.textContent = total
   }
 }

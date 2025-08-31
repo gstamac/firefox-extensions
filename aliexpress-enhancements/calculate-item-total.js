@@ -23,13 +23,9 @@ setTimeout(() => {
       return false
     }
 
-    // registerPrice(document, '[class*="price--wrap--"]', '.pdp-comp-price-current')
     registerPrice(document, '.product-price', '.product-price-current .product-price-value')
-    // registerPrice(document, '.product-info ._1kyL5', '._3Jqm6')
-    // if (!registerPrice(document, '.uniform-banner-box ._3YD-o', '._3Jqm6')) {
-    //   registerPrice(document, '.uniform-banner-box div', '.uniform-banner-box-price')
-    // }
-    // registerPrice(document, '.pdp-info-right .product-price', '.product-price-current')
+    registerPrice(document, '[class^="price-default--priceWrap--"]', '[class^="price-default--current--"]')
+    registerPrice(document, '[class^="price-default--defaultPriceWrap--"]', '[class^="price-default--current--"]')
 
     const getShippingPriceElements = () =>
       [...shippingElement ?
@@ -39,15 +35,12 @@ setTimeout(() => {
     const updateTotal = () => {
       try {
         const shippingPriceElements = getShippingPriceElements()
-        console.log('shippingPriceElements', shippingPriceElements)
         if (shippingPriceElements.length > 0) {
           const shipping = shippingPriceElements.map(s => parseShipping(s.innerHTML)).filter(s => s !== undefined)[0];
           if (shipping !== undefined) {
             const quantity = quantityElement.value;
 
-            const vatIncluded = document.querySelector('[class*="vat-installment--item--"]') !== undefined;
-
-            updateTotalElements(quantity, shipping, vatIncluded);
+            updateTotalElements(quantity, shipping);
           } else {
             clearTotalElements();
           }
@@ -59,9 +52,9 @@ setTimeout(() => {
       }
     }
 
-    const updateTotalElements = (quantity, shipping, vatIncluded) => {
+    const updateTotalElements = (quantity, shipping) => {
       priceElements.forEach(p => {
-        updateTotalElement(p.priceElement, 'calc-product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping, vatIncluded));
+        updateTotalElement(p.priceElement, 'calc-product-price-total', formatTotal(p.valueElement.innerHTML, quantity, shipping));
       })
     }
 
